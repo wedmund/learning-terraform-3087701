@@ -56,9 +56,3 @@ module "blog_sg" {
   egress_cidr_blocks = ["0.0.0.0/0"]
 }
 
-resource "aws_security_group" "blog" {
-  name        = "blog"
-  description = "allow http and https in. Allow everything out."
-
-  vpc_id = module.vpc.public_subnets[0]
-}
