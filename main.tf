@@ -36,6 +36,7 @@ resource "aws_instance" "blog" {
   instance_type = var.instance_type
   
   vpc_security_group_ids = [module.blog_sg.security_group_id]
+  subnet_id = module.vpc.public_subnets[0].id
   
   tags = {
     Name = "HelloWorld"
@@ -44,7 +45,7 @@ resource "aws_instance" "blog" {
 
 module "blog_sg" {
   source  = "terraform-aws-modules/security-group/aws"
-  version = "4.13.1"
+  version = "4.16.0"
   
   name                = "blog"
   vpc_id              = module.vpc.vpc_id
