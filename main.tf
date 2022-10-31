@@ -44,3 +44,19 @@ module "blog_sg" {
   egress_rules        = ["all-all"]
   egress_cidr_blocks  = ["0.0.0.0/0"]
 }
+
+module "ec2_private" {
+  depends_on = [module.vpc]
+  source = "terrafrom-aws-modules/ec2-instance/aws"
+  version = "2.19.0"
+
+  name = "blog"
+  ami = data.aws_ami.app_ami.id
+  instance_type = var.instance_type
+  vpc_security_group_ids = [module.blog_sg.security_group_id]
+  subnet_ids = [
+    module.vpc.public_subnets[0]
+  ]
+  instance_count = 1
+}
+
