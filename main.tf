@@ -43,7 +43,6 @@ module "blog_sg" {
 
   egress_rules        = ["all-all"]
   egress_cidr_blocks  = ["0.0.0.0/0"]
-  depends_on          = [module.vpc]
 }
 
 resource "aws_instance" "blog" {
@@ -55,5 +54,4 @@ resource "aws_instance" "blog" {
   tags = {
     Name = "HelloWorld"
   }
-  depends_on    = [module.blog_sg]
 }
