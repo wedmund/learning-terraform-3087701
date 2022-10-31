@@ -48,7 +48,7 @@ module "blog_sg" {
 module "ec2_private" {
   depends_on = [module.vpc]
   source = "terrafrom-aws-modules/ec2-instance/aws"
-  version = "2.19.0"
+  version = "4.1.4"
 
   name = "blog"
   ami = data.aws_ami.app_ami.id
