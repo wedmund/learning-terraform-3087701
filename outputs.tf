@@ -1,7 +1,7 @@
-output "vpc_id" {
-  value = "${module.vpc}"
+output "instance_ami" {
+  value = aws_instance.blog.ami
 }
 
-output "sg_id" {
-  value = module.blog_sg
+output "instance_arn" {
+  value = aws_instance.blog.arn
 }

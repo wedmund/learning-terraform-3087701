@@ -31,12 +31,23 @@ module "vpc" {
   }
 }
 
+resource "aws_instance" "blog" {
+  ami           = data.aws_ami.app_ami.id
+  instance_type = var.instance_type
+  
+  vpc_security_group_ids = [module.blog_sg.security_group_id]
+  
+  tags = {
+    Name = "HelloWorld"
+  }
+}
+
 module "blog_sg" {
   source  = "terraform-aws-modules/security-group/aws"
   version = "4.13.1"
   
   name                = "blog"
-  vpc_id              = module.vpc.vpc_id
+  vpc_id              = "module.vpc.public_subnets[0]"
 
   ingress_rules       = ["http-80-tcp","https-443-tcp"]
   ingress_cidr_blocks = ["0.0.0.0/0"]
@@ -44,19 +55,3 @@ module "blog_sg" {
   egress_rules        = ["all-all"]
   egress_cidr_blocks  = ["0.0.0.0/0"]
 }
-
-module "ec2_private" {
-  depends_on = [module.vpc]
-  source = "terrafrom-aws-modules/ec2-instance/aws"
-  version = "4.1.4"
-
-  name = "blog"
-  ami = data.aws_ami.app_ami.id
-  instance_type = var.instance_type
-  vpc_security_group_ids = [module.blog_sg.security_group_id]
-  subnet_ids = [
-    module.vpc.public_subnets[0]
-  ]
-  instance_count = 1
-}
-
